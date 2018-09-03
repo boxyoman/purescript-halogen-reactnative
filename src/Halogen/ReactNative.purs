@@ -1,12 +1,14 @@
 module Halogen.ReactNative
   ( slot
   , module Halogen.ReactNative.Core
+  , module Halogen.ReactNative.Elements
   ) where
 
 import Prelude
 import Data.Maybe (Maybe(..))
 import Halogen.Component (Component, mkComponentSlot, unComponent)
 import Halogen.ReactNative.Core (ParentVIEW, VIEW, ComponentVIEW)
+import Halogen.ReactNative.Elements (ButtonProps, Leaf, Node, button, text, text', view)
 import Halogen.ReactNative.Core as Core
 
 slot
