@@ -1,5 +1,5 @@
 {
-  "name": "native",
+  "name": "purescript-halogen-reactnaitve",
   "ignore": [
     "**/.*",
     "node_modules",

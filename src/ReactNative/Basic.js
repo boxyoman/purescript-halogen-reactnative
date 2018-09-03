@@ -23,8 +23,6 @@ exports.concatProps = function(props1, props2) {
 
 
 exports.element_ = function(el, attrs) {
-  console.log("Test 1");
-  console.log(el, attrs);
   return React.createElement.apply(
     null,
     [el, attrs].concat((attrs && attrs.children) || [])
@@ -47,7 +45,6 @@ exports.registerComponent = function(name){
       var componentRef;
       const updateState = function(element){
         return function () {
-          console.log(componentRef);
           componentRef.setState({element: element});
         }
       }
