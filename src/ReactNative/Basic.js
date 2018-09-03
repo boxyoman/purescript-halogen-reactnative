@@ -45,6 +45,9 @@ exports.registerComponent = function(name){
       var componentRef;
       const updateState = function(element){
         return function () {
+          if(componentRef === undefined) {
+            return ;
+          }
           componentRef.setState({element: element});
         }
       }

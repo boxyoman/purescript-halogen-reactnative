@@ -5,6 +5,7 @@ import Prelude
 import Data.Foldable (foldMap)
 import Data.Function.Uncurried (runFn2)
 import Data.Maybe (Maybe(..), maybe)
+import Data.Traversable (traverse)
 import Effect (Effect)
 import Effect.Aff (Aff)
 import Effect.Class (liftEffect)
@@ -12,7 +13,7 @@ import Effect.Ref (Ref)
 import Effect.Ref as Ref
 import Halogen.Aff.Driver (HalogenIO)
 import Halogen.Aff.Driver as AD
-import Halogen.Aff.Driver.State (RenderStateX)
+import Halogen.Aff.Driver.State (RenderStateX, unRenderStateX)
 import Halogen.Component (ComponentSlot, Component)
 import Halogen.Query.InputF (InputF)
 import Halogen.ReactNative.Core (VIEW(..), Native(..), runGraft)
@@ -41,7 +42,6 @@ runUI component i appName = do
   keyId <- liftEffect (Ref.new 0)
   AD.runUI (mkRenderSpec appName keyId) component i
 
-
 mkRenderSpec
   :: AppName
   -> Ref Int
@@ -60,40 +60,47 @@ mkRenderSpec appName keyRef =
     -> VIEW (ComponentSlot VIEW g Aff p (f Unit)) (f Unit)
     -> Maybe (RenderState s f g p o)
     -> Effect (RenderState s f g p o)
-  render driver child view =
-    let node = renderView driver view
-     in
-      case _ of
-        Nothing -> do
-          keyId <- Ref.modify (_ + 1) keyRef
-          updateView <- registerComponent appName node
-          pure $ RenderState { keyId, node : node, updateView }
-        Just (RenderState r) -> do
-          r.updateView node
-          pure $ RenderState { keyId: r.keyId, node : node, updateView: r.updateView }
+  render driver child view lastRender = do
+    node <- renderView driver (map getElement <<< child) view
+    case lastRender of
+      Nothing -> do
+        keyId <- Ref.modify (_ + 1) keyRef
+        updateView <- registerComponent appName node
+        pure $ RenderState { keyId, node : node, updateView }
+      Just (RenderState r) -> do
+        r.updateView node
+        pure $ RenderState { keyId: r.keyId, node : node, updateView: r.updateView }
+
+
+getElement :: RenderStateX RenderState -> NativeElement
+getElement = unRenderStateX \(RenderState { node }) -> node
 
 
 renderView
-  :: forall p i
-   . (InputF Unit i -> Effect  Unit)
+  :: forall p i m
+   . Monad m
+  => (InputF Unit i -> Effect  Unit)
+  -> (p -> m NativeElement)
   -> VIEW p i
-  -> NativeElement
-renderView driver (VIEW view) = go view
+  -> m NativeElement
+renderView driver handleSlot (VIEW view) = go view
   where
-    go :: Native (Array (Prop (InputF Unit i))) p -> NativeElement
+    go :: Native (Array (Prop (InputF Unit i))) p -> m NativeElement
     go (Text str) =
       let textElem = textElemU str
           props = runFn2 RB.prop "children" textElem
-        in RB.element textU props
+        in pure $ RB.element textU props
 
-    go (Elem nClass props children) =
-      let children' = map go children
-          childProp = runFn2 RB.prop "children" children'
-          nativeProps = (foldMap (renderProp driver) props <> childProp)
-       in RB.element nClass nativeProps
+    go (Elem nClass props children) = do
+      children' <- traverse go children
+      let childProp = runFn2 RB.prop "children" children'
+      let nativeProps = (foldMap (renderProp driver) props <> childProp)
+      pure $ RB.element nClass nativeProps
 
     go (Grafted gd) =
       go (runGraft gd)
+    go (Widget w) =
+      handleSlot w
 
 
 renderProp

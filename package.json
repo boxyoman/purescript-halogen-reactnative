@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "build-basic": "pulp build --main Example.Basic.Main --include ./examples/basic/ --to index.js",
+    "build-components-inputs": "pulp build --main Example.Components.Inputs.Main --include ./examples/components-inputs/ --to index.js",
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest"
   },

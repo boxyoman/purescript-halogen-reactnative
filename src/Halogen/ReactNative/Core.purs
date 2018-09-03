@@ -2,6 +2,8 @@ module Halogen.ReactNative.Core
   ( VIEW(..)
   , Native(..)
   , ComponentVIEW
+  , ParentVIEW
+  , slot
   , Graft(..)
   , GraftX(..)
   , unGraft
@@ -13,8 +15,11 @@ import Prelude
 
 import Data.Bifunctor (class Bifunctor, bimap, rmap)
 import Halogen.Query.InputF (InputF)
+import Halogen.Component (ComponentSlot)
 import ReactNative.Basic (NativeClass, Prop)
 import Unsafe.Coerce (unsafeCoerce)
+
+type ParentVIEW f g p m = VIEW (ComponentSlot VIEW g m p (f Unit)) (f Unit)
 
 newtype VIEW p i = VIEW (Native (Array (Prop (InputF Unit i))) p)
 
@@ -31,7 +36,12 @@ type ComponentVIEW f = VIEW Void (f Unit)
 data Native a w
   = Elem NativeClass a (Array (Native a w))
   | Text String
+  | Widget w
   | Grafted (Graft a w)
+
+
+slot :: forall p q. p -> VIEW p q
+slot = VIEW <<< Widget
 
 
 instance bifunctorNative ∷ Bifunctor Native where
@@ -78,6 +88,7 @@ runGraft =
   unGraft \(Graft fa fw v) →
     let
       go (Text s) = Text s
+      go (Widget w) = Widget (fw w)
       go (Elem comp p ch) = Elem comp (fa p) (map go ch)
       go (Grafted g) = Grafted (bimap fa fw g)
     in
