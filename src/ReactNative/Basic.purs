@@ -38,6 +38,9 @@ instance numberToProp :: ToProp Number where
 instance recordToProp :: ToProp (Record a) where
   toProp = unsafeCoerce
 
+instance arrayToProp :: ToProp a => ToProp (Array a) where
+  toProp = unsafeCoerce
+
 
 element :: NativeClass -> NativeProps -> NativeElement
 element = runFn2 element_

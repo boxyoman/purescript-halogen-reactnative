@@ -23,10 +23,7 @@ import Halogen.HTML.Events (input, input_)
 import Halogen.Query.InputF (InputF(..))
 import Halogen.ReactNative.Properties (IProp(..))
 import ReactNative.Basic (EventType(..), NativeEvent, Prop(Handler))
-import ReactNative.EventTypes
-  ( PressEvent, ScrollEvent, TextInputEvent, TouchEvent, SelectionChangeEvent
-  , KeyPressEvent
-  )
+import ReactNative.EventTypes (PressEvent, ScrollEvent, TextInputEvent, TouchEvent, SelectionChangeEvent, KeyPressEvent)
 import Unsafe.Coerce (unsafeCoerce)
 
 
@@ -57,10 +54,29 @@ selectionChangeHandler = unsafeCoerce
 onPress :: forall r i . (PressEvent -> Maybe i) -> IProp (onPress :: PressEvent | r) i
 onPress = handler (EventType "onPress") <<< pressHandler
 
-onResponderMove :: forall r i . (TouchEvent -> Maybe i) -> IProp (onChange :: TouchEvent | r) i
+onResponderGrant :: forall r i . (TouchEvent -> Maybe i) -> IProp (onResponderGrant :: TouchEvent | r) i
+onResponderGrant = handler (EventType "onResponderGrant") <<< touchHandler
+
+onResponderMove :: forall r i . (TouchEvent -> Maybe i) -> IProp (onResponderMove :: TouchEvent | r) i
 onResponderMove = handler (EventType "onResponderMove") <<< touchHandler
 
-onChangeText :: forall r i . (TextInputEvent -> Maybe i) -> IProp (onChange :: TextInputEvent | r) i
+onResponderReject :: forall r i . (TouchEvent -> Maybe i) -> IProp (onResponderReject :: TouchEvent | r) i
+onResponderReject = handler (EventType "onResponderReject") <<< touchHandler
+
+onResponderRelease :: forall r i . (TouchEvent -> Maybe i) -> IProp (onResponderRelease :: TouchEvent | r) i
+onResponderRelease = handler (EventType "onResponderRelease") <<< touchHandler
+
+onResponderTerminate :: forall r i . (TouchEvent -> Maybe i) -> IProp (onResponderTerminate :: TouchEvent | r) i
+onResponderTerminate = handler (EventType "onResponderTerminate") <<< touchHandler
+
+onResponderTerminationRequest
+  :: forall r i
+   . (TouchEvent -> Maybe i)
+  -> IProp (onResponderTerminationRequest :: TouchEvent | r) i
+onResponderTerminationRequest =
+  handler (EventType "onResponderTerminationRequest") <<< touchHandler
+
+onChangeText :: forall r i . (TextInputEvent -> Maybe i) -> IProp (onChangeText :: TextInputEvent | r) i
 onChangeText = handler (EventType "onChangeText") <<< changeTextHandler
 
 onScroll :: forall r i . (ScrollEvent -> Maybe i) -> IProp (onScroll :: ScrollEvent | r) i

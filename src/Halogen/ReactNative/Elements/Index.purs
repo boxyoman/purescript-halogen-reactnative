@@ -5,14 +5,23 @@ import Prelude
 import ReactNative.EventTypes (KeyPressEvent, PressEvent, ScrollEvent, TextInputEvent, TouchEvent, SelectionChangeEvent)
 
 type ViewProps r =
-  ( accessibilityLabel :: String
-  , accessible :: Boolean
-  , testID :: String
-  , collapsable :: Boolean
-  , accessibilityViewIsModal :: Boolean
-  , accessibilityElementsHidden :: Boolean
-  , shouldRasterizeIOS :: Boolean
+  ( onResponderGrant :: TouchEvent
   , onResponderMove :: TouchEvent
+  , onResponderReject :: TouchEvent
+  , onResponderRelease :: TouchEvent
+  , onResponderTerminate :: TouchEvent
+  , onResponderTerminationRequest :: TouchEvent
+
+  , accessibilityElementsHidden :: Boolean
+  , accessibilityLabel :: String
+  , accessibilityTraits :: Array String -- It's actually an enum
+  , accessibilityViewIsModal :: Boolean
+  , accessible :: Boolean
+  , collapsable :: Boolean
+  , nativeID :: String
+  , removeClippedSubviews :: Boolean
+  , shouldRasterizeIOS :: Boolean
+  , testID :: String
   | r
   )
 

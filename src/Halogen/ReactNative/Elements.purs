@@ -14,11 +14,11 @@ import Prelude
 
 import Data.Newtype (unwrap)
 import Halogen.ReactNative.Core (VIEW(..), Native(..))
+import Halogen.ReactNative.Elements.Indexed (ButtonProps, TextInputProps, ViewProps, ActivityIndicatorProps)
 import Halogen.ReactNative.Properties (IProp)
 import Halogen.ReactNative.Unsafe.Elements as Elems
 import ReactNative.Basic (NativeClass)
 import Unsafe.Coerce (unsafeCoerce)
-import Halogen.ReactNative.Elements.Indexed (ButtonProps, TextInputProps)
 
 type Node r p i = Array (IProp r i) -> Array (VIEW p i) -> VIEW p i
 type Leaf r p i = Array (IProp r i) -> VIEW p i
@@ -37,7 +37,7 @@ text' = element Elems.textU
 text :: forall p i . String -> VIEW p i
 text = VIEW <<< Text
 
-view :: forall p i . Node () p i
+view :: forall p i . Node (ViewProps ()) p i
 view = element Elems.viewU
 
 textInput :: forall p i . Node TextInputProps p i
@@ -49,5 +49,5 @@ statusBar = element Elems.statusBarU
 scrollView :: forall p i . Node () p i
 scrollView = element Elems.scrollViewU
 
-activityIndicator :: forall p i . Node () p i
+activityIndicator :: forall p i . Node ActivityIndicatorProps p i
 activityIndicator = element Elems.activityIndicatorU

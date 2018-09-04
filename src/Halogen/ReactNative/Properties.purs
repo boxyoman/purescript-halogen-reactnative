@@ -22,14 +22,17 @@ disabled = prop "disabled" <<< toProp
 accessible :: forall i r . Boolean -> IProp ( accessible :: Boolean | r) i
 accessible = prop "accessible" <<< toProp
 
+accessibilityElementsHidden :: forall i r . Boolean -> IProp ( accessibilityElementsHidden :: Boolean | r) i
+accessibilityElementsHidden = prop "accessibilityElementsHidden" <<< toProp
+
 accessibilityLabel :: forall i r . String -> IProp ( accessibilityLabel :: String | r) i
 accessibilityLabel = prop "accessibilityLabel" <<< toProp
 
+accessibilityTraits :: forall i r . Array String -> IProp ( accessibilityTraits :: Array String | r) i
+accessibilityTraits = prop "accessibilityTraits" <<< toProp
+
 accessibilityViewIsModal :: forall i r . Boolean -> IProp ( accessibilityViewIsModal :: Boolean | r) i
 accessibilityViewIsModal = prop "accessibilityViewIsModal" <<< toProp
-
-accessibilityElementsHidden :: forall i r . Boolean -> IProp ( accessibilityElementsHidden :: Boolean | r) i
-accessibilityElementsHidden = prop "accessibilityElementsHidden" <<< toProp
 
 allowFontScaling :: forall i r . Boolean -> IProp ( allowFontScaling :: Boolean | r) i
 allowFontScaling = prop "allowFontScaling" <<< toProp
@@ -82,8 +85,14 @@ maxLength = prop "maxLength" <<< toProp
 multiline :: forall i r . Boolean -> IProp ( multiline :: Boolean | r) i
 multiline = prop "multiline" <<< toProp
 
+nativeID :: forall i r . String -> IProp ( nativeID :: String | r) i
+nativeID = prop "nativeID" <<< toProp
+
 numberOfLines :: forall i r . Int -> IProp ( numberOfLines :: Int | r) i
 numberOfLines = prop "numberOfLines" <<< toProp
+
+removeClippedSubviews :: forall i r . Boolean -> IProp ( removeClippedSubviews :: Boolean | r) i
+removeClippedSubviews = prop "removeClippedSubviews" <<< toProp
 
 secureTextEntry :: forall i r . Boolean -> IProp ( secureTextEntry :: Boolean | r) i
 secureTextEntry = prop "secureTextEntry" <<< toProp
