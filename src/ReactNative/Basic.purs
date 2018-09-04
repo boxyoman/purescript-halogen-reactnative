@@ -19,8 +19,24 @@ data Prop a
   | Property String PropValue
 
 
-propFromString :: String -> PropValue
-propFromString = unsafeCoerce
+class ToProp a where
+  toProp :: a -> PropValue
+
+
+instance stringToProp :: ToProp String where
+  toProp = unsafeCoerce
+
+instance intToProp :: ToProp Int where
+  toProp = unsafeCoerce
+
+instance booleanToProp :: ToProp Boolean where
+  toProp = unsafeCoerce
+
+instance numberToProp :: ToProp Number where
+  toProp = unsafeCoerce
+
+instance recordToProp :: ToProp (Record a) where
+  toProp = unsafeCoerce
 
 
 element :: NativeClass -> NativeProps -> NativeElement

@@ -1,10 +1,17 @@
 module ReactNative.EventTypes
-  ( TouchEvent
+  ( PressEvent
+  , TouchEvent
   , LayoutEvent
   , TextInputEvent
   , ContentSizeEvent
   , ScrollEvent
+  , SelectionChangeEvent
+  , KeyPressEvent
   ) where
+
+import Prelude
+
+type PressEvent = Unit
 
 type TouchEvent = {
   nativeEvent :: {
@@ -28,11 +35,7 @@ type LayoutEvent = {
   }
 }
 
-type TextInputEvent = {
-  nativeEvent :: {
-    text :: String
-  }
-}
+type TextInputEvent = String
 
 type ContentSizeEvent = {
   nativeEvent :: {
@@ -43,5 +46,20 @@ type ContentSizeEvent = {
 type ScrollEvent = {
   nativeEvent :: {
     contentOffset :: {x::Number, y::Number}
+  }
+}
+
+type SelectionChangeEvent = {
+  nativeEvent :: {
+    selection :: {
+      start :: Int,
+      end  :: Int
+    }
+  }
+}
+
+type KeyPressEvent = {
+  nativeEvent :: {
+    key :: String
   }
 }

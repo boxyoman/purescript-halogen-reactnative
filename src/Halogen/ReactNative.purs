@@ -5,11 +5,13 @@ module Halogen.ReactNative
   ) where
 
 import Prelude
+
 import Data.Maybe (Maybe(..))
 import Halogen.Component (Component, mkComponentSlot, unComponent)
 import Halogen.ReactNative.Core (ParentVIEW, VIEW, ComponentVIEW)
-import Halogen.ReactNative.Elements (ButtonProps, Leaf, Node, button, text, text', view)
 import Halogen.ReactNative.Core as Core
+import Halogen.ReactNative.Elements
+  (button, scrollView, text, text', textInput, view)
 
 slot
   :: forall f m p i o g
