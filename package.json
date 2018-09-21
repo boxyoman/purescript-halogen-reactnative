@@ -5,6 +5,7 @@
   "scripts": {
     "build-basic": "pulp build --main Example.Basic.Main --include ./examples/basic/ --to index.js",
     "build-components-inputs": "pulp build --main Example.Components.Inputs.Main --include ./examples/components-inputs/ --to index.js",
+    "build-components-multitype": "pulp build --main Example.Components.MultiType.Main --include ./examples/components-multitype/ --to index.js",
     "build-components": "pulp build --main Example.Components.Main --include ./examples/components/ --to index.js",
     "build-ajax": "pulp build --main Example.Ajax.Main --include ./examples/effect-aff-ajax/ --to index.js"
   },

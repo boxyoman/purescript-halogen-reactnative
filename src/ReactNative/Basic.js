@@ -33,6 +33,7 @@ exports.element_ = function(el, attrs) {
 exports.handlerProp = function(key, f) {
   var prop = {};
   prop[key] = function (e) {
+    console.log(key, e);
     f(e)();
   };
   return prop;
@@ -45,6 +46,7 @@ exports.registerComponent = function(name){
       var componentRef;
       const updateState = function(element){
         return function () {
+          console.log(componentRef);
           if(componentRef === undefined) {
             return ;
           }
