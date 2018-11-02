@@ -5,7 +5,9 @@
     "node_modules",
     "bower_components",
     "examples",
-    "output"
+    "output",
+    "ios",
+    "android"
   ],
   "dependencies": {
     "purescript-prelude": "^4.1.0",
