@@ -18,15 +18,16 @@ import Halogen.Component (ComponentSlot, Component)
 import Halogen.Query.InputF (InputF)
 import Halogen.ReactNative.Core (VIEW(..), Native(..), runGraft)
 import Halogen.ReactNative.Unsafe.Elements (textElemU, textU)
-import ReactNative.Basic (NativeElement, NativeProps, Prop(..), registerComponent)
+import ReactNative.Basic (NativeClass, NativeElement, NativeProps, NativeThis, Prop(..))
 import ReactNative.Basic as RB
 
 
 newtype RenderState s (f :: Type -> Type) (g :: Type -> Type) p o =
   RenderState
     { keyId :: Int
-    , node :: NativeElement
-    , updateView :: NativeElement -> Effect Unit
+    , rclass :: NativeClass
+    , self :: NativeThis
+    , node :: Maybe NativeElement
     }
 
 type AppName = String
@@ -65,15 +66,19 @@ mkRenderSpec appName keyRef =
     case lastRender of
       Nothing -> do
         keyId <- Ref.modify (_ + 1) keyRef
-        updateView <- registerComponent appName node
-        pure $ RenderState { keyId, node : node, updateView }
+        let {rclass, self} = RB.mkComponent node
+        RB.registerComponent appName rclass
+        pure $ RenderState {keyId, rclass, self, node: Nothing}
       Just (RenderState r) -> do
-        r.updateView node
-        pure $ RenderState { keyId: r.keyId, node : node, updateView: r.updateView }
+        RB.updateState node r.self
+        pure $ RenderState r
 
 
 getElement :: RenderStateX RenderState -> NativeElement
-getElement = unRenderStateX \(RenderState { node }) -> node
+getElement = unRenderStateX \(RenderState { node, rclass }) ->
+  case node of
+    Just n -> n
+    Nothing -> RB.element rclass mempty
 
 
 renderView

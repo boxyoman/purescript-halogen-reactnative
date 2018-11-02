@@ -22,10 +22,10 @@ exports.concatProps = function(props1, props2) {
 };
 
 
-exports.element_ = function(el, attrs) {
+exports.element_ = function(rclass, attrs) {
   return React.createElement.apply(
     null,
-    [el, attrs].concat((attrs && attrs.children) || [])
+    [rclass, attrs].concat((attrs && attrs.children) || [])
   );
 };
 
@@ -33,37 +33,40 @@ exports.element_ = function(el, attrs) {
 exports.handlerProp = function(key, f) {
   var prop = {};
   prop[key] = function (e) {
-    console.log(key, e);
     f(e)();
   };
   return prop;
 };
 
+exports.updateState_ = function (element, stuff) {
+  return function () {
+    if (stuff.self === null) {
+    } else {
+      stuff.self.setState({element : element});
+    }
+  };
+};
+
+exports.mkComponent = function(element) {
+  const stuff = {
+    self: null,
+  };
+  const rclass = createReactClass({
+    getInitialState: function () {
+      stuff.self = this;
+      return { element: element };
+    },
+    render: function () {
+      return this.state.element;
+    },
+  });
+  return {rclass: rclass, self: stuff,};
+};
 
 exports.registerComponent = function(name){
-  return function(element){
+  return function(rclass){
     return function(){
-      var componentRef;
-      const updateState = function(element){
-        return function () {
-          console.log(componentRef);
-          if(componentRef === undefined) {
-            return ;
-          }
-          componentRef.setState({element: element});
-        }
-      }
-      const component = createReactClass({
-        getInitialState: function() {
-          componentRef = this;
-          return {element: element};
-        },
-        render: function () {
-          return this.state.element;
-        }
-      });
-      RN.AppRegistry.registerComponent(name, function(){ return component; });
-      return updateState;
+      RN.AppRegistry.registerComponent(name, function(){ return rclass; });
     }
   }
 };

@@ -45,6 +45,11 @@ instance arrayToProp :: ToProp a => ToProp (Array a) where
 element :: NativeClass -> NativeProps -> NativeElement
 element = runFn2 element_
 
+
+updateState :: NativeElement -> NativeThis -> Effect Unit
+updateState = runFn2 updateState_
+
+
 instance functorProp :: Functor Prop where
   map f (Handler evt cb) = Handler evt (map f <$> cb)
   map f (Nested s p) = Nested s (map f p)
@@ -59,6 +64,9 @@ foreign import data NativeElement :: Type
 
 -- | React Property
 foreign import data NativeProps :: Type
+
+-- | Not really sure
+foreign import data NativeThis :: Type
 
 
 instance semigroupNativeProps :: Semigroup NativeProps where
@@ -77,4 +85,8 @@ foreign import prop :: forall value .  Fn2 String value NativeProps
 
 foreign import emptyProps :: NativeProps
 
-foreign import registerComponent :: String -> NativeElement -> Effect (NativeElement -> Effect Unit)
+foreign import updateState_ :: Fn2 NativeElement NativeThis (Effect Unit)
+
+foreign import mkComponent :: NativeElement -> { rclass :: NativeClass, self :: NativeThis }
+
+foreign import registerComponent :: String -> NativeClass -> Effect Unit
