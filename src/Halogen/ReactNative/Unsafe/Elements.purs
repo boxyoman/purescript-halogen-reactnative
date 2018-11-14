@@ -12,6 +12,7 @@ foreign import textInputU :: NativeClass
 foreign import statusBarU :: NativeClass
 foreign import scrollViewU :: NativeClass
 foreign import activityIndicatorU :: NativeClass
+foreign import touchableOpacityU :: NativeClass
 
 textElemU :: String -> NativeElement
 textElemU = unsafeCoerce

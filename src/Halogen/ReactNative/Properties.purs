@@ -121,3 +121,5 @@ title = prop "title" <<< toProp
 value :: forall i r . String -> IProp ( value :: String | r) i
 value = prop "value" <<< toProp
 
+style :: forall i r s . { | s } -> IProp ( style :: String | r) i
+style = prop "style" <<< toProp

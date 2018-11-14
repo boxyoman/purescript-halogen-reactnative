@@ -15,3 +15,4 @@ exports.viewU = RN.View;
 exports.textInputU = RN.TextInput;
 exports.statusBarU = RN.StatusBar;
 exports.scrollViewU = RN.scrollView;
+exports.touchableOpacityU = RN.TouchableOpacity;

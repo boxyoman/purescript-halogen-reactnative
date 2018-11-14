@@ -8,13 +8,14 @@ module Halogen.ReactNative.Elements
   , textInput
   , statusBar
   , scrollView
+  , touchableOpacity
   ) where
 
 import Prelude
 
 import Data.Newtype (unwrap)
 import Halogen.ReactNative.Core (VIEW(..), Native(..))
-import Halogen.ReactNative.Elements.Indexed (ButtonProps, TextInputProps, ViewProps, ActivityIndicatorProps)
+import Halogen.ReactNative.Elements.Indexed (ButtonProps, TextInputProps, ViewProps, ActivityIndicatorProps, TouchableOpacityProps)
 import Halogen.ReactNative.Properties (IProp)
 import Halogen.ReactNative.Unsafe.Elements as Elems
 import ReactNative.Basic (NativeClass)
@@ -51,3 +52,6 @@ scrollView = element Elems.scrollViewU
 
 activityIndicator :: forall p i . Node ActivityIndicatorProps p i
 activityIndicator = element Elems.activityIndicatorU
+
+touchableOpacity :: forall p i . Node TouchableOpacityProps p i
+touchableOpacity = element Elems.touchableOpacityU

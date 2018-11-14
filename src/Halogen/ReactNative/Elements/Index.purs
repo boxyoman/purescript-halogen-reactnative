@@ -22,6 +22,7 @@ type ViewProps r =
   , removeClippedSubviews :: Boolean
   , shouldRasterizeIOS :: Boolean
   , testID :: String
+  , style :: String
   | r
   )
 
@@ -69,4 +70,13 @@ type TextInputProps = ViewProps
 type ActivityIndicatorProps = ViewProps
   ( animation :: Boolean
   , hidesWhenStopped :: Boolean
+  )
+
+type TouchableWithoutFeedbackProps r =
+  ( onPress :: PressEvent
+  | r
+  )
+
+type TouchableOpacityProps = TouchableWithoutFeedbackProps
+  (
   )
